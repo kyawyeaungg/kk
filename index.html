@@ -1,0 +1,178 @@
+  <!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+ 
+ 
+ <p id="demo"></p>
+
+
+</head>
+<body onload="getData()">
+
+
+
+<form name="demo" style="background-color: #796c6c26;width: 300px;text-align: center;margin: 50px 0 0 50px; border-radius: 8px;">
+
+
+
+<h2 style="padding-top: 10px;">Currency Convertor</h2><hr><br>
+
+<label for="amount">Amount:&nbsp;&nbsp;&nbsp;&nbsp;</label>
+<input type="text" name="num"  style="width: 200px;height: 25px;" placeholder="Choose number" >
+</input>&nbsp;
+ 
+ <br><br>
+
+<label for="from">From :&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
+<select id='currencyType' name="base_currency" style="width: 200px; height: 30px;">
+    <script>
+    
+</script>
+</select><br><br>
+
+<label for=""> To: MMK</label>
+<input type="text" name="res" style="width: 200px;height: 25px;" placeholder="Result here"  class="loadButton"></input>
+
+<br><br>
+
+ 
+</form>
+
+<script type="text/javascript">
+function getData(){
+
+   $.ajax({
+
+               url         : "http://forex.cbm.gov.mm/api/latest",
+
+               type        : "POST",
+
+               contentType : "application/json",
+
+               dataType    : "json",
+
+               processData : false,
+
+               cache       : false,
+
+               // data         : JSON.stringify(myobj)
+
+           }).done(function( msg ) {
+
+               console.log(msg)
+
+               
+
+               var data=msg.rates;
+
+               $.each(data, function(key, value) {
+
+                    $('#currencyType')
+
+                         .append($('<option>', { value : key })
+
+                         .text(key));
+
+               });
+
+               $(document).ready(function()
+
+               {
+
+               $(".loadButton").on("click", function()
+
+                  //$("button").click(function()
+
+                {
+
+               
+
+                
+
+                var e = document.getElementById("currencyType");
+
+                var cur = e.options[e.selectedIndex].value;
+
+
+
+
+
+
+
+               var data = msg.rates;
+
+               var todayRate = msg['rates'][cur];
+
+               todayRate = parseFloat(todayRate.replace(/,/g, ''));
+
+               if (cur === "JPY"|| cur === "VND" || cur === "KRW" || cur === "KHR" || cur === "IDR" || cur === "LAK" )
+
+
+
+               todayRate = parseInt(todayRate) / 100;
+
+               
+
+              // document.getElementById("demo").innerHTML="result";
+
+               console.log(todayRate);
+
+               
+
+
+
+               var num = parseInt(document.demo.num.value);
+
+               console.log('num' +num);
+
+
+
+               var values =num * todayRate;
+
+               console.log('values'+values);
+
+
+
+               document.demo.res.value =values;
+
+               
+
+               });
+
+               });  
+
+               // for (var i = 0; i < arr.length; i++) {
+
+
+
+               //     // document.write("<select name="+arr[i]+">");
+
+
+
+               //     document.write("<option value="+arr[i]+">" + arr[i] + "</option>");
+
+
+
+               //     //console.log(arr[i]);
+
+
+
+               // }
+
+               
+
+               
+
+           });
+
+
+
+}
+         
+                                
+</script>
+<script src="http://code.jquery.com/jquery-3.3.1.min.js"></script>
+</body>
+</html>
+ 
